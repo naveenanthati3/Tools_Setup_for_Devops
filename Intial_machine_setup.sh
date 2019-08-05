@@ -182,6 +182,7 @@ fi
 #Installing Rails
 #curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 #sudo $ptoin install -y nodejs
+sudo $ptoin install -y npm
 
 #gem install rails -v 5.2.2
 
@@ -209,7 +210,40 @@ sudo $ptoin install openvpn -y
 # Installing gnome tweak tool which contains adanced options for ubuntu gui
 sudo add-$ptoin-repository universe
 sudo $ptoin install gnome-tweak-tool
+# Download STS 
+cd /opt/
+sudo wget https://download.springsource.com/release/STS/3.9.9.RELEASE/dist/e4.12/spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+sudo tar -xzvf spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+cd /opt/sts-bundle/sts-3.9.9.RELEASE
+cat << EOT > STS.desktop
+[Desktop Entry]
+Name=SpringSource Tool Suite
+Comment=SpringSource Tool Suite
+Exec=/opt/sts-bundle/sts-3.9.9.RELEASE/STS
+Icon=/opt/sts-bundle/sts-3.9.9.RELEASE/icon.xpm
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Development;IDE;Java;
+EOT
 
+sudo mv STS.desktop /usr/share/applications/
 
+sleep 5
 
-
+cd /opt/
+wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
+sudo tar -xvzf postman.tar.gz
+sudo rm postman.tar.gz
+sudo ln -s /opt/Postman/Postman /usr/bin/postman
+cat << EOT > postman.desktop
+Name=Postman
+Comment=Postman
+Exec=/usr/bin/postman
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Development;IDE;Java;
+EOT
+sudo mv postman.desktop /usr/share/applcations/
