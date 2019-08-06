@@ -13,24 +13,57 @@ sudo $ptoin install software-properties-common -y
 sudo $ptoin update -y && sudo $ptoin upgrade -y && sudo $ptoin clean
 
 # Installing curl browser
-sudo $ptoin install curl -y
+
+if [[ -e /usr/bin/curl  ]]; then
+  echo " ### Curl is Installed ### "
+else 
+  echo "###### Installing curl ######"
+  sudo $ptoin install curl -y
+fi
 
 # Installing network tools
+echo "###### Installing Net-Tools ######"
 sudo $ptoin install net-tools -y
+if [ $? == 0 ] ; then
+  echo " #### nettool Installed Successfully #### "
+else 
+  echo " ### Net-Tool is not Installed ### "
+  echo "2.Net-Tool is not Installed" >> Not_Installed.txt
+ fi
 
 # Installing htools app to view the ram and process digitally
+echo "###### Installing htop ######"
 sudo $ptoin install htop -y
+if [ $? == 0 ] ; then
+  echo " #### htop Installed Successfully #### "
+else 
+  echo " ### htop is not Installed ### "
+  echo "3.htop is not Installed" >> Not_Installed.txt
+ fi
 
 # Installing python
-sudo $ptoin-repository ppa:deadsnakes/ppa
 sudo $ptoin update
+echo "###### Installing Latest Python ######"
 sudo $ptoint install python python-pip
+if [ $? == 0 ] ; then
+  echo " #### Latest Python Installed Successfully #### "
+else 
+  echo " ### Python is not Installed ### "
+  echo "4.Python is not Installed" >> Not_Installed.txt
+ fi
 
-# Installinmg Ansible
+# Installing Ansible
+echo "###### Installing Ansible ######"
 sudo $ptoin install ansible
+if [ $? == 0 ] ; then
+  echo " #### Ansible Installed Successfully #### "
+else 
+  echo " ### Ansible is not Installed ### "
+  echo "5.Ansible is not Installed" >> Not_Installed.txt
+ fi
 
-#to install openssh-server
-sudo $ptoin install openssh-server -y
+# Installing openssh-server
+sudo $ptoin install openssh-server openssh-client -y
 
 #to install apache server
 sudo $ptoin install apache2 -y
@@ -46,7 +79,7 @@ sudo $ptoin install default-jdk -y && \
      $ptoin install default-jre -y
      
  # To Install Java Specific Version
- sudo $ptoin install openjdk-8-jre-headless
+ #sudo $ptoin install openjdk-8-jre-headless
  # Installing Maven
  sudo $ptoin install maven
  
@@ -62,6 +95,16 @@ sudo $ptoin install -y postgresql
 
 #Installing Filezilla
 sudo $ptoin install filezilla
+
+# Installing elasticsearch
+sudo $ptoin install elasticsearch
+
+# Installing MongoDB
+sudo $ptoin install mongodb
+
+# Installing Node
+sudo $ptoin install -y nodejs
+sudo $ptoin install -y npm 
 
 cd /opt/
 wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
@@ -81,18 +124,6 @@ Categories=Development;
 EOT
 sudo mv postman.desktop /usr/share/applcations/
 
-
- 
-#gem install bundler
-
-#Installing Rails
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-#sudo $ptoin install -y nodejs
-sudo $ptoin install -y npm
-
-#gem install rails -v 5.2.2
-
-#rails -v
 
 #to know the java path
 #sudo update-alternatives --config java
