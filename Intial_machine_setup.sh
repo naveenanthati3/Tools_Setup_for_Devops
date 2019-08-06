@@ -12,7 +12,7 @@ fi
 sudo $ptoin install software-properties-common -y
 sudo $ptoin update -y && sudo $ptoin upgrade -y && sudo $ptoin clean
 
-# Installind curl browser
+# Installing curl browser
 sudo $ptoin install curl -y
 
 # Installing network tools
@@ -24,7 +24,10 @@ sudo $ptoin install htop -y
 # Installing python
 sudo $ptoin-repository ppa:deadsnakes/ppa
 sudo $ptoin update
-sudo $ptoint install python3.7 -y
+sudo $ptoint install python python-pip
+
+# Installinmg Ansible
+sudo $ptoin install ansible
 
 #to install openssh-server
 sudo $ptoin install openssh-server -y
@@ -32,11 +35,64 @@ sudo $ptoin install openssh-server -y
 #to install apache server
 sudo $ptoin install apache2 -y
 
-#to install java
+# Installing skype
+sudo wget https://go.skype.com/skypeforlinux-64.deb
+sudo dpkg -i skypeforlinux-64.deb
+
+# Installing java Default Version
 sudo $ptoin install software-properties-common -y
 
 sudo $ptoin install default-jdk -y && \
      $ptoin install default-jre -y
+     
+ # To Install Java Specific Version
+ sudo $ptoin install openjdk-8-jre-headless
+ # Installing Maven
+ sudo $ptoin install maven
+ 
+ # Installing Tomcat
+ sudo $ptoin install tomcat9
+
+#Installing MySQL
+sudo $ptoin install -y mysql-server mysql-client libmysqlclient-dev
+
+#Installing PostgreSQL
+sudo $ptoin update
+sudo $ptoin install -y postgresql
+
+#Installing Filezilla
+sudo $ptoin install filezilla
+
+cd /opt/
+wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
+sudo tar -xvzf postman.tar.gz
+sudo rm postman.tar.gz
+sudo ln -s /opt/Postman/Postman /usr/bin/postman
+cat << EOT > postman.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Comment=Postman
+Exec=postman
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+EOT
+sudo mv postman.desktop /usr/share/applcations/
+
+
+ 
+#gem install bundler
+
+#Installing Rails
+#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+#sudo $ptoin install -y nodejs
+sudo $ptoin install -y npm
+
+#gem install rails -v 5.2.2
+
+#rails -v
 
 #to know the java path
 #sudo update-alternatives --config java
@@ -177,27 +233,6 @@ fi
 #rbenv global 2.6.1
 #ruby -v
 
-#gem install bundler
-
-#Installing Rails
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-#sudo $ptoin install -y nodejs
-sudo $ptoin install -y npm
-
-#gem install rails -v 5.2.2
-
-#rails -v
-
-#Installing MySQL
-#sudo $ptoin install -y mysql-server mysql-client libmysqlclient-dev
-
-#Installing PostgreSQL
-#sudo sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
-#wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
-#sudo $ptoin update
-#sudo $ptoin install -y postgresql-common
-#sudo $ptoin install -y postgresql-9.5 libpq-dev
-
 # Instaliing Zentyal server on linux machine
 #curl -s download.zentyal.com/install | sudo sh
 
@@ -231,19 +266,3 @@ sudo mv STS.desktop /usr/share/applications/
 
 sleep 5
 
-cd /opt/
-wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
-sudo tar -xvzf postman.tar.gz
-sudo rm postman.tar.gz
-sudo ln -s /opt/Postman/Postman /usr/bin/postman
-cat << EOT > postman.desktop
-Name=Postman
-Comment=Postman
-Exec=/usr/bin/postman
-Icon=/opt/Postman/app/resources/app/assets/icon.png
-StartupNotify=true
-Terminal=false
-Type=Application
-Categories=Development;IDE;Java;
-EOT
-sudo mv postman.desktop /usr/share/applcations/
