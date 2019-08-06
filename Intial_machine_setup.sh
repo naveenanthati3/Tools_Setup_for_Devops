@@ -11,6 +11,7 @@ fi
 
 sudo $ptoin install software-properties-common -y
 sudo $ptoin update -y && sudo $ptoin upgrade -y && sudo $ptoin clean
+sleep 2
 
 # Installing curl browser
 
@@ -19,7 +20,14 @@ if [[ -e /usr/bin/curl  ]]; then
 else 
   echo "###### Installing curl ######"
   sudo $ptoin install curl -y
+       if [[ -e $? == 0 ]]; then
+       echo "##### Curl Successfully Installed #####"
+       else
+       echo " ### Curl is not Installed ### "
+       echo "1.Curl not Installed" > Not_Installed.txt
+       fi
 fi
+sleep 2
 
 # Installing network tools
 echo "###### Installing Net-Tools ######"
