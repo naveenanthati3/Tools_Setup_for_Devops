@@ -19,39 +19,56 @@ if [[ -e /usr/bin/curl  ]]; then
   echo " ### Curl is Installed ### "
 else 
   echo "###### Installing curl ######"
-  sudo $ptoin install curl -y
+  sudo $ptoin install curl -y &> Not_Installed.txt
        if [[ -e $? == 0 ]]; then
        echo "##### Curl Successfully Installed #####"
        else
        echo " ### Curl is not Installed ### "
-       echo "1.Curl not Installed" > Not_Installed.txt
+       echo "##### 1.Curl not Installed #####" &>> Not_Installed.txt
        fi
 fi
 sleep 2
 
 # Installing network tools
+if [[ -e  /var/lib/dpkg/info/net-tools.list ]]; then
+echo " ###### Net-Tools Available ##### "
+else
 echo "###### Installing Net-Tools ######"
-sudo $ptoin install net-tools -y
-if [ $? == 0 ] ; then
-  echo " #### nettool Installed Successfully #### "
-else 
-  echo " ### Net-Tool is not Installed ### "
-  echo "2.Net-Tool is not Installed" >> Not_Installed.txt
- fi
+sudo $ptoin install net-tools -y &>> Not_Installed.txt
+        if [ $? == 0 ] ; then
+        echo " #### nettool Installed Successfully #### "
+        else 
+        echo " ### Net-Tool is not Installed ### "
+        echo "2.Net-Tool is not Installed" >> Not_Installed.txt
+        fi
+fi
+sleep 2
 
 # Installing htools app to view the ram and process digitally
-echo "###### Installing htop ######"
-sudo $ptoin install htop -y
-if [ $? == 0 ] ; then
-  echo " #### htop Installed Successfully #### "
-else 
-  echo " ### htop is not Installed ### "
-  echo "3.htop is not Installed" >> Not_Installed.txt
- fi
+
+if [[ -e /usr/bin/htop ]]; then
+echo " ##### Htop is Available ##### "
+else
+echo " ###### Installing htop ###### "
+sudo $ptoin install htop -y &>> Not_Installed.txt
+        if [ $? == 0 ] ; then
+        echo " #### htop Installed Successfully #### "
+        else 
+        echo " ### htop is not Installed ### "
+        echo "3.htop is not Installed" >> Not_Installed.txt
+        fi
+fi
+sleep 2
 
 # Installing python
 sudo $ptoin update
-echo "###### Installing Latest Python ######"
+PS3=" Enter options for Python Installation: "
+select python in Available_Versions Install_Specific_Version Continue
+do 
+  case $python in
+  Available_Versions)
+            echo "#######" "Available Python Versions are " $(ls /usr/local/lib |grep python) "########"
+            echo "###### Installing Latest Python ######"
 sudo $ptoint install python python-pip
 if [ $? == 0 ] ; then
   echo " #### Latest Python Installed Successfully #### "
