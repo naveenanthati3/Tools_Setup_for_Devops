@@ -20,12 +20,12 @@ if [[ -e /usr/bin/curl  ]]; then
 else 
   echo "###### Installing curl ######"
   sudo $ptoin install curl -y &> Not_Installed.txt
-       if [[ -e $? == 0 ]]; then
+      if [[ -e $? == 0 ]]; then
        echo "##### Curl Successfully Installed #####"
-       else
+      else
        echo " ### Curl is not Installed ### "
        echo "##### 1.Curl not Installed #####" &>> Not_Installed.txt
-       fi
+      fi
 fi
 sleep 2
 
@@ -35,12 +35,12 @@ echo " ###### Net-Tools Available ##### "
 else
 echo "###### Installing Net-Tools ######"
 sudo $ptoin install net-tools -y &>> Not_Installed.txt
-        if [ $? == 0 ] ; then
-        echo " #### nettool Installed Successfully #### "
-        else 
-        echo " ### Net-Tool is not Installed ### "
-        echo "2.Net-Tool is not Installed" >> Not_Installed.txt
-        fi
+    if [ $? == 0 ] ; then
+      echo " #### nettool Installed Successfully #### "
+    else 
+      echo " ### Net-Tool is not Installed ### "
+      echo "2.Net-Tool is not Installed" >> Not_Installed.txt
+    fi
 fi
 sleep 2
 
@@ -51,81 +51,399 @@ echo " ##### Htop is Available ##### "
 else
 echo " ###### Installing htop ###### "
 sudo $ptoin install htop -y &>> Not_Installed.txt
-        if [ $? == 0 ] ; then
-        echo " #### htop Installed Successfully #### "
-        else 
-        echo " ### htop is not Installed ### "
-        echo "3.htop is not Installed" >> Not_Installed.txt
-        fi
+    if [ $? == 0 ] ; then
+      echo " #### htop Installed Successfully #### "
+    else 
+      echo " ### htop is not Installed ### "
+      echo "3.htop is not Installed" >> Not_Installed.txt
+    fi
 fi
 sleep 2
 
 # Installing python
 sudo $ptoin update
 PS3=" Enter options for Python Installation: "
-select python in Available_Versions Install_Specific_Version Continue
+select python in Available_Versions Install_Specific_Version Install_Python_pip Skip_Python_Installation
 do 
   case $python in
   Available_Versions)
-            echo "#######" "Available Python Versions are " $(ls /usr/local/lib |grep python) "########"
-            echo "###### Installing Latest Python ######"
-sudo $ptoint install python python-pip
-if [ $? == 0 ] ; then
-  echo " #### Latest Python Installed Successfully #### "
-else 
-  echo " ### Python is not Installed ### "
-  echo "4.Python is not Installed" >> Not_Installed.txt
- fi
+        echo "#######" "Available Python Versions are " $(ls /usr/local/lib |grep python) "########"
+        ;;
+  Install_Specific_Version)    
+        echo -n "Enter Required Version of Python:"
+        read n
+        sudo $ptoin install -y python$n python3-pip &>> Not_Installed.txt
+        if [ $? == 0 ] ; then
+          echo " #### Python$n Installed Successfully #### "
+        else 
+          echo " ### Python is not Installed ### "
+          echo "4.Python is not Installed" >> Not_Installed.txt
+        fi
+        ;;
+  Install_Python_pip)
+        echo " #### Installing Python_Pip #### "
+        sudo $ptoin install -y python3-pip
+        if [ $? == 0 ] ; then
+          echo " #### Python-pip Installed Successfully #### "
+        else 
+          echo " ### Python-pip is not Installed ### "
+          echo "4.Python-pip is not Installed" >> Not_Installed.txt
+        fi
+  Skip_Python_Installation)
+        echo " #### Going to Next Installation #### "
+          break
+          ;;
+  *)
+        echo " Error: Please try again (select 1..4)!"
+  esac
+done
+sleep 2
 
 # Installing Ansible
+if [[ -e /usr/bin/ansible ]]; then
+echo "##### Ansible is Installed #####"
+else
 echo "###### Installing Ansible ######"
-sudo $ptoin install ansible
-if [ $? == 0 ] ; then
-  echo " #### Ansible Installed Successfully #### "
-else 
-  echo " ### Ansible is not Installed ### "
-  echo "5.Ansible is not Installed" >> Not_Installed.txt
- fi
+sudo $ptoin install ansible &>> Not_Installed.txt
+  if [ $? == 0 ] ; then
+    echo " #### Ansible Installed Successfully #### "
+  else 
+    echo " ### Ansible is not Installed ### "
+    echo "5.Ansible is not Installed" >> Not_Installed.txt
+  fi
+fi
+sleep 2
 
 # Installing openssh-server
-sudo $ptoin install openssh-server openssh-client -y
+if [[ -e /etc/network/if-up.d/openssh-server ]]; then
+echo " #### Open-ssh Server in Installed #### "
+else
+  echo " ##### Installing open-ssh server ##### "
+  sudo $ptoin install openssh-server openssh-client -y &>> Not_Installed.txt
+    if [[ $? == 0 ]]; then
+      echo " ### openssh server installed successfully ### "
+    else
+      echo "6.Openssh Server is not installed" >> Not_Installed.txt
+    fi
+fi
+sleep 2
 
 #to install apache server
-sudo $ptoin install apache2 -y
+if [[ -e /etc/apache2/apache2.conf ]]; then
+  echo " ##### Apache Server is Installed ##### "
+else
+  echo " #### Installing Apache Server #### "
+  sudo $ptoin install apache2 -y &>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+    echo " ### Apache Server is Installed Successfully ### "
+  else
+    echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
+  fi
+fi
+sleep 2
 
 # Installing skype
-sudo wget https://go.skype.com/skypeforlinux-64.deb
-sudo dpkg -i skypeforlinux-64.deb
+skype
+if [[ $? == 0 ]];
+  echo " #### Skype is Available #### "
+else
+  echo " #### Installing Skype #### "
+  sudo wget https://go.skype.com/skypeforlinux-64.deb
+  sudo dpkg -i skypeforlinux-64.deb &>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+   echo " ### Skype is Installed ### "
+  else
+    echo " ### 8.Skype is not Installed ### " >> Not_Installed.txt
+  fi
+fi
+sleep 2
 
 # Installing java Default Version
 sudo $ptoin install software-properties-common -y
+if [[ -f  /usr/lib/jvm]]; then
+  while :
+  do
+  clear
+     echo "#### Available Java Versions are #####" && ls /usr/lib/jvm |grep java
+     echo
+     echo "what do you want do?"
+     echo " 1)Install Specific Version"
+     echo " 2)Continue with Default"
+     read -p "Select an option [1-2]: " option
+     case $option in
+            1)
+            echo
+            echo -n "Enter Java Version to Install:"
+            read n
+            echo "### Installing Java Version $n ###"
+            sudo $ptoin install -y openjdk-$n-jre-headless &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo " Java Version $n is installed"
+            else  
+              echo "#### Java is not Installed ####"
+              echo "9.Java is not Installed" >> Not_Installed.txt
+            fi
+            break
+            ;;
+            2)
+            echo
+            echo " Going to Next Installation Setup "
+            break
+            ;;
+          esac
+      done
+else
+  while :
+  do
+  clear
+          echo " #### Java is not Installed #### "
+          echo
+          echo "what do you want to do?"
+          echo "  1) Install Default Java"
+          echo "  2) Install Specific Version"
+          read -p "Select an option [1-2]: " option
+          case $option in
+          1)
+            echo "### Installing Default Java ###"
+            sudo $ptoin install -y default-jdk default-jre &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo " Default Java is installed"
+            else  
+              echo "#### Java is not Installed ####"
+              echo "9.Java is not Installed" >> Not_Installed.txt
+            fi
+            break
+            ;;
+            2)
+            echo
+            echo -n "Enter Java Version to Install:"
+            read n
+            echo "### Installing Java Version $n ###"
+            sudo $ptoin install -y openjdk-$n-jre-headless &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo " Java Version $n is installed"
+            else  
+              echo "#### Java is not Installed ####"
+              echo "9.Java is not Installed" >> Not_Installed.txt
+            fi
+            break
+            ;;
+          esac
+      done
+fi
 
-sudo $ptoin install default-jdk -y && \
-     $ptoin install default-jre -y
-     
- # To Install Java Specific Version
- #sudo $ptoin install openjdk-8-jre-headless
+sleep 2
+
  # Installing Maven
- sudo $ptoin install maven
- 
+mvn --version
+if [[ $? == 0 ]]; then
+  echo "#### Maven is Installed ####"
+else
+  echo " ### Maven is not Installed ### "
+  echo " ### Installing Maven ### "
+  sudo $ptoin install maven $>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+    echo "### Maven is Installed ###"
+  else
+    echo "### Maven is not Installed ###"
+    echo "### 10.Maven is not Installed ###" >> Not_Installed.txt
+  fi
+fi
+
  # Installing Tomcat
- sudo $ptoin install tomcat9
+ ls /etc/ |grep tomcat
+ if [[ $? == 0 ]]; then
+  echo " ##### Installed Tomcat Versions are ##### " $(ls /etc/ |grep tomcat)
+ else
+  while :
+  do
+  clear
+          echo " #### Tomcat Server is not Installed #### "
+          echo
+          echo "what do you want to do?"
+          echo "  1) Skip Installation"
+          echo "  2) Install Specific Version"
+          read -p "Select an option [1-2]: " option
+          case $option in
+          1)
+            echo
+            echo " #### Moving to Next Installation ####"
+            break
+            ;;
+            2)
+            echo
+            echo -n "Enter Tomcat Version to Install:"
+            read n
+            echo "### Installing Tomcat Version $n ###"
+            sudo $ptoin install -y tomcat$n &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo " Tomcat Version $n is installed"
+            else  
+              echo "#### Tomcat is not Installed ####"
+              echo "11.Tomcat is not Installed" >> Not_Installed.txt
+            fi
+            break
+            ;;
+          esac
+      done
+fi  
+sleep 2
 
 #Installing MySQL
-sudo $ptoin install -y mysql-server mysql-client libmysqlclient-dev
+if [[ -e /etc/mysql/conf.d/mysql.cnf ]]; then
+  echo " ##### MySQL Server is Installed ##### "
+else
+  while :
+  do
+  clear
+    echo " ### MySQL Server is not Installed ### "
+    echo " what do you want to do?"
+    echo " 1)Skip_Installation"
+    echo " 2)Install MySQL"
+    read -p "Select an option [1-2]: " option
+          case $option in
+          1)
+            echo
+            echo " #### Moving to Next Installation ####"
+            break
+            ;;
+          2)
+            echo " #### Installing MySQL Server #### "
+            sudo $ptoin install -y mysql-server mysql-client libmysqlclient-dev &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo "### MySQL Server Installed Successfully"
+            else
+              echo " ### MySQL is not Installed ### "
+              echo " ### 12.MySQL is not Installed ### " >> Not_Installed.txt
+            fi
+            break
+            ;;
+          esac
+    done
+fi
 
 #Installing PostgreSQL
-sudo $ptoin update
-sudo $ptoin install -y postgresql
+sudo $ptoin update -y
+if [[ -e /etc/postgresql ]]; then
+  echo "### PostgreSQL is Installed & Versions are ####" $(ls /etc/postgresql)
+else
+  while :
+  do
+  clear
+    echo " ### PostgreSQL is not Installed ### "
+    echo
+    echo " what do you want to do?"
+    echo " 1)Skip_Installation"
+    echo " 2)Install_PostgreSQL"
+    read -p "Select an option [1-2]: " option
+        case $option in
+          1)
+            echo
+            echo " #### Moving to Next Installation ####"
+            break
+            ;;
+          2)
+            echo " #### Installing PostgreSQL Server #### "
+            sudo $ptoin install -y postgresql &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo "### PostgreSQL Server Installed Successfully"
+            else
+              echo " ### PostgreSQL is not Installed ### "
+              echo " ### 13.PostgreSQL is not Installed ### " >> Not_Installed.txt
+            fi
+            break
+            ;;
+        esac
+   done
+fi
+sleep 2
 
 #Installing Filezilla
-sudo $ptoin install filezilla
+#sudo $ptoin install filezilla
 
 # Installing elasticsearch
-sudo $ptoin install elasticsearch
+if [[ -e /etc/elasticsearch ]]; then
+  echo "##### Elastic Search is Installed #####"
+  echo "##### Installed Elastic Search Versions #####"
+  sudo dpkg -l | grep 'elastic' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2
+else
+  while :
+  do
+  clear
+      echo "#### Elastic Search is not Installed ####"
+      echo
+      echo " What do you want to do?"
+      echo "1)Skip_Installation"
+      echo "2)Install Specific Version"
+      read -p "Select an option [1-2]: " option
+        case $option in
+          1)
+            echo
+            echo " #### Moving to Next Installation ####"
+            break
+            ;;
+          2)
+            echo " #### Installing PostgreSQL Server #### "
+            sudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+            sudo $ptoin-get install apt-transport-https
+            echo " # Enter version in [5,6,7] # "
+            echo -n "Enter version number without Decimal:"
+            read n
+            echo " ## Installing Elastic Search $n.x"
+            echo "deb https://artifacts.elastic.co/packages/$n.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-$n.x.list
+            sudo $ptoin install elasticsearch &>> Not_Installed.txt
+            if [[ $? == 0 ]]; then
+              echo "### Elasic Search $n.x Installed Successfully"
+            else
+              echo " ### Elasic Search $n is not Installed ### "
+              echo " ### 14.Elasic Search $n is not Installed ### " >> Not_Installed.txt
+            fi
+            break
+            ;;
+        esac
+   done
+fi
+sleep 2
 
 # Installing MongoDB
-sudo $ptoin install mongodb
+if [[ -e /lib/systemd/system/mongod.service ]]; then
+  echo " #### MongoDB is Installed #### "
+  echo " ### Installed MongoDB Versions ### "
+  sudo dpkg -l | grep 'mongo' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2
+else
+  while :
+  do
+  clear
+      echo " ## MongoDB is not Installed ## "
+      echo " What do you want to do?"
+      echo "1)Skip_Installation"
+      echo "2)Install MongoDB"
+      read -p "Select an option [1-2]: " option
+        case $option in
+          1)
+            echo
+            echo " #### Moving to Next Installation ####"
+            break
+            ;;
+          2)
+            echo " #### Installing MongoDB Server #### "
+            sudo wget -qO - https://www.mongodb.org/static/pgp/server-4.0.asc | sudo apt-key add -
+            sudo echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+            sudo $ptoin-get update -y
+            sudo $ptoin-get install -y mongodb-org
+            if [[ $? == 0 ]]; then
+              echo "### MongoDB Installed Successfully"
+            else
+              echo " ### MongoDB is not Installed ### "
+              echo " ### 15.MongoDB is not Installed ### " >> Not_Installed.txt
+            fi
+            break
+            ;;
+        esac
+   done
+fi
+sleep 2
+
 
 # Installing Node
 sudo $ptoin install -y nodejs
