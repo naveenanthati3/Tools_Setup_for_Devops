@@ -444,9 +444,133 @@ else
 fi
 sleep 2
 
-
 # Installing Node
-sudo $ptoin install -y nodejs
+sudo dpkg -l | grep 'npm' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2
+if [[ $? == 0 ]]; then
+  echo " #### Nodejs is Availble & Versions are " $(sudo dpkg -l | grep 'npm' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2) "####"
+  while :
+  do
+  clear
+    echo
+    echo " What do you want to do?"
+    echo " 1)Install Specific Version"
+    echo " 2)Skip Nodejs Setup or Continue"
+    read -p "Select an option [1-2]: " option
+    case $option in
+          1)
+            echo
+            echo " #### Installatig Nodejs ####"
+              while :
+              do
+              clear
+                  echo " Select Versions of Nodejs to Install"
+                  echo " 1)Node.js v12.x"
+                  echo " 2)Node.js v11.x"
+                  echo " 3)Node.js v10.x"
+                  echo " 4)Node.js v8.x"
+                  read -p "Select an option [1-4]: " option
+                  case $option in
+                        1)
+                          echo
+                          echo " ## Installing Nodejs v12.x ## "
+                          curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        2)
+                          echo
+                          echo " ## Installing Nodejs v11.x ## "
+                          curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        3)
+                          echo
+                          echo " ## Installing Nodejs v10.x ## "
+                          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        4)
+                          echo
+                          echo " ## Installing Nodejs v8.0 ## "
+                          curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                      esac
+                  done  
+            break
+            ;;
+          2)
+            echo " #### Moving to Next Installation #### "
+            break
+            ;;
+        esac
+   done
+
+else
+    while :
+    do
+    clear
+      echo " ### Nodejs is not Installed ### "
+      echo " What do you want to do?"
+      echo " 1)Install Specific Version"
+      echo " 2)Skip Nodejs Setup"
+      case $option in
+          1)
+            echo
+            echo " #### Installatig Nodejs ####"
+              while :
+              do
+              clear
+                  echo " Select Versions of Nodejs to Install"
+                  echo " 1)Node.js v12.x"
+                  echo " 2)Node.js v11.x"
+                  echo " 3)Node.js v10.x"
+                  echo " 4)Node.js v8.x"
+                  read -p "Select an option [1-4]: " option
+                  case $option in
+                        1)
+                          echo
+                          echo " ## Installing Nodejs v12.x ## "
+                          curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        2)
+                          echo
+                          echo " ## Installing Nodejs v11.x ## "
+                          curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        3)
+                          echo
+                          echo " ## Installing Nodejs v10.x ## "
+                          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                        4)
+                          echo
+                          echo " ## Installing Nodejs v8.0 ## "
+                          curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+                          sudo $ptoin-get install -y nodejs
+                          break
+                          ;;
+                      esac
+                  done  
+            break
+            ;;
+          2)
+            echo " #### Moving to Next Installation #### "
+            break
+            ;;
+        esac
+   done
+ fi  
+
 sudo $ptoin install -y npm 
 
 cd /opt/
