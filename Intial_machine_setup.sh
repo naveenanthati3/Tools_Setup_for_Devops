@@ -20,7 +20,7 @@ if [[ -e /usr/bin/curl  ]]; then
 else 
   echo "###### Installing curl ######"
   sudo $ptoin install curl -y &> Not_Installed.txt
-      if [[ -e $? == 0 ]]; then
+      if [[ $? == 0 ]]; then
        echo "##### Curl Successfully Installed #####"
       else
        echo " ### Curl is not Installed ### "
