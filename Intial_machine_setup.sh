@@ -103,14 +103,30 @@ sleep 2
 if [[ -e /usr/bin/ansible ]]; then
 echo "##### Ansible is Installed #####"
 else
-echo "###### Installing Ansible ######"
-sudo $ptoin install ansible &>> Not_Installed.txt
-  if [ $? == 0 ] ; then
-    echo " #### Ansible Installed Successfully #### "
-  else 
-    echo " ### Ansible is not Installed ### "
-    echo "5.Ansible is not Installed" >> Not_Installed.txt
-  fi
+while :
+do
+clear
+        echo " What do you want "
+        echo "1)Install Ansible "
+        echo "2)Skip Ansible"
+        read -p "Select option [1-2] : " option
+        case $option in
+        1)
+        echo "###### Installing Ansible ######"
+        sudo $ptoin install ansible &>> Not_Installed.txt
+        if [ $? == 0 ] ; then
+                echo " #### Ansible Installed Successfully #### "
+        else 
+                echo " ### Ansible is not Installed ### "
+                echo "5.Ansible is not Installed" >> Not_Installed.txt
+        fi
+        break
+        ;;
+        2)
+        echo " Skipping Ansible "
+        break
+       esac
+      done
 fi
 sleep 2
 
@@ -129,18 +145,18 @@ fi
 sleep 2
 
 #to install apache server
-if [[ -e /etc/apache2/apache2.conf ]]; then
-  echo " ##### Apache Server is Installed ##### "
-else
-  echo " #### Installing Apache Server #### "
-  sudo $ptoin install apache2 -y &>> Not_Installed.txt
-  if [[ $? == 0 ]]; then
-    echo " ### Apache Server is Installed Successfully ### "
-  else
-    echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
-  fi
-fi
-sleep 2
+#if [[ -e /etc/apache2/apache2.conf ]]; then
+#  echo " ##### Apache Server is Installed ##### "
+#else
+#  echo " #### Installing Apache Server #### "
+ # sudo $ptoin install apache2 -y &>> Not_Installed.txt
+  #if [[ $? == 0 ]]; then
+   # echo " ### Apache Server is Installed Successfully ### "
+  #else
+   # echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
+  #fi
+#fi
+#sleep 2
 
 # Installing skype
 skype
@@ -235,27 +251,27 @@ fi
 sleep 2
 
  # Installing Maven
-mvn --version
-if [[ $? == 0 ]]; then
-  echo "#### Maven is Installed ####"
-else
-  echo " ### Maven is not Installed ### "
-  echo " ### Installing Maven ### "
-  sudo $ptoin install maven $>> Not_Installed.txt
-  if [[ $? == 0 ]]; then
-    echo "### Maven is Installed ###"
-  else
-    echo "### Maven is not Installed ###"
-    echo "### 10.Maven is not Installed ###" >> Not_Installed.txt
-  fi
-fi
+#mvn --version
+#if [[ $? == 0 ]]; then
+#  echo "#### Maven is Installed ####"
+#else
+ # echo " ### Maven is not Installed ### "
+  #echo " ### Installing Maven ### "
+  #sudo $ptoin install maven $>> Not_Installed.txt
+  #if [[ $? == 0 ]]; then
+  #  echo "### Maven is Installed ###"
+  #else
+  #  echo "### Maven is not Installed ###"
+   # echo "### 10.Maven is not Installed ###" >> Not_Installed.txt
+  #fi
+#fi
 
  # Installing Tomcat
  ls /etc/ |grep tomcat
  if [[ $? == 0 ]]; then
-  echo " ##### Installed Tomcat Versions are ##### " $(ls /etc/ |grep tomcat)
+ echo " ##### Installed Tomcat Versions are ##### " $(ls /etc/ |grep tomcat)
  else
-  while :
+ while :
   do
   clear
           echo " #### Tomcat Server is not Installed #### "
@@ -646,56 +662,55 @@ sudo mv postman.desktop /usr/share/applcations/
 #run below command to config the tomcat
 #source ~/.bashrc
 #echo $CATALINA_HOME
-if [ $ptoin=apt ] then
-    clear
-         echo " Your Machine is Ubuntu"
+#if [ $ptoin=apt ] then
+ #   clear
+ #        echo " Your Machine is Ubuntu"
              
-sudo apt-get remove docker docker-engine docker.io containerd runc
+#sudo apt-get remove docker docker-engine docker.io containerd runc
 
-sudo apt-get update
+#sudo apt-get update
 
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common -y
+#sudo apt-get install \
+  #  apt-transport-https \
+ #   ca-certificates \
+   # curl \
+    #gnupg-agent \
+    #software-properties-common -y
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-sudo apt-key fingerprint 0EBFCD88
+#sudo apt-key fingerprint 0EBFCD88
 
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+#sudo add-apt-repository \
+ #  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  # $(lsb_release -cs) \
+   #stable"
+#
+#sudo apt-get update
 
-sudo apt-get update
+#sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-
-docker --version
-else [ $ptoin=yum ] then
-clear
-     echo "Your Machine is Centos"
-     sudo yum remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-engine
-      sudo yum install -y yum-utils \
-      device-mapper-persistent-data \
-      lvm2
-      sudo yum-config-manager \
-      --add-repo \
-      https://download.docker.com/linux/centos/docker-ce.repo
-      sudo yum install docker-ce docker-ce-cli containerd.io
-      sudo systemctl start docker
-      docker --version
-fi
+#docker --version
+#else [ $ptoin=yum ] then
+#clear
+ #    echo "Your Machine is Centos"
+  #   sudo yum remove docker \
+   #               docker-client \
+    #              docker-client-latest \
+     #             docker-common \
+      #            docker-latest \
+       ##          docker-logrotate \
+         #         docker-engine
+      #sudo yum install -y yum-utils \
+      #device-mapper-persistent-data \
+      #lvm2
+      #sudo yum-config-manager \
+      #--add-repo \
+      #https://download.docker.com/linux/centos/docker-ce.repo
+      #sudo yum install docker-ce docker-ce-cli containerd.io
+      #sudo systemctl start docker
+      #docker --version
+#fi
 # kubernetes setup
 #sudo $ptoin update && sudo $ptoin install -y $ptoin-transport-https && \
 #curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo $ptoin-key add - && \
@@ -738,29 +753,29 @@ fi
 #sudo usermod -a -G admin username
 
 # Installing openvpn
-sudo $ptoin install openvpn -y
+#sudo $ptoin install openvpn -y
 
 # Installing gnome tweak tool which contains adanced options for ubuntu gui
 sudo add-$ptoin-repository universe
 sudo $ptoin install gnome-tweak-tool
 # Download STS 
-cd /opt/
-sudo wget https://download.springsource.com/release/STS/3.9.9.RELEASE/dist/e4.12/spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
-sudo tar -xzvf spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
-cd /opt/sts-bundle/sts-3.9.9.RELEASE
-cat << EOT > STS.desktop
-[Desktop Entry]
-Name=SpringSource Tool Suite
-Comment=SpringSource Tool Suite
-Exec=/opt/sts-bundle/sts-3.9.9.RELEASE/STS
-Icon=/opt/sts-bundle/sts-3.9.9.RELEASE/icon.xpm
-StartupNotify=true
-Terminal=false
-Type=Application
-Categories=Development;IDE;Java;
-EOT
+#cd /opt/
+#sudo wget https://download.springsource.com/release/STS/3.9.9.RELEASE/dist/e4.12/spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+#sudo tar -xzvf spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+#cd /opt/sts-bundle/sts-3.9.9.RELEASE
+#cat << EOT > STS.desktop
+#[Desktop Entry]
+#Name=SpringSource Tool Suite
+#Comment=SpringSource Tool Suite
+#Exec=/opt/sts-bundle/sts-3.9.9.RELEASE/STS
+#Icon=/opt/sts-bundle/sts-3.9.9.RELEASE/icon.xpm
+#StartupNotify=true
+#Terminal=false
+##Type=Application
+#Categories=Development;IDE;Java;
+#EOT
 
-sudo mv STS.desktop /usr/share/applications/
+#sudo mv STS.desktop /usr/share/applications/
 
 sleep 5
 
