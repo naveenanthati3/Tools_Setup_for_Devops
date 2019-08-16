@@ -134,32 +134,48 @@ sleep 2
 if [[ -e /etc/network/if-up.d/openssh-server ]]; then
 echo " #### Open-ssh Server in Installed #### "
 else
-  echo " ##### Installing open-ssh server ##### "
-  sudo $ptoin install openssh-server openssh-client -y &>> Not_Installed.txt
-    if [[ $? == 0 ]]; then
-      echo " ### openssh server installed successfully ### "
-    else
-      echo "6.Openssh Server is not installed" >> Not_Installed.txt
-    fi
+        while :
+        do
+        clear
+                echo " What do you want "
+                echo "1)Install Open-Ssh Server "
+                echo "2)Skip Open-Ssh Server"
+                read -p "Select option [1-2] : " option
+                case $option in
+                        1)
+                        echo " ##### Installing open-ssh server ##### "
+                        sudo $ptoin install openssh-server openssh-client -y &>> Not_Installed.txt
+                                if [[ $? == 0 ]]; then
+                                        echo " ### openssh server installed successfully ### "
+                                else
+                                        echo "6.Openssh Server is not installed" >> Not_Installed.txt
+                                fi
+                                  break
+                                  ;;
+                                2)
+                                echo " Skipping Ansible "
+                                break
+                             esac
+                        done
 fi
 sleep 2
 
 #to install apache server
-#if [[ -e /etc/apache2/apache2.conf ]]; then
-#  echo " ##### Apache Server is Installed ##### "
-#else
-#  echo " #### Installing Apache Server #### "
- # sudo $ptoin install apache2 -y &>> Not_Installed.txt
-  #if [[ $? == 0 ]]; then
-   # echo " ### Apache Server is Installed Successfully ### "
-  #else
-   # echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
-  #fi
-#fi
-#sleep 2
+if [[ -e /etc/apache2/apache2.conf ]]; then
+  echo " ##### Apache Server is Installed ##### "
+else
+  echo " #### Installing Apache Server #### "
+  sudo $ptoin install apache2 -y &>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+    echo " ### Apache Server is Installed Successfully ### "
+  else
+    echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
+  fi
+fi
+sleep 2
 
 # Installing skype
-skype
+skypeforlinux
 if [[ $? == 0 ]];
   echo " #### Skype is Available #### "
 else
