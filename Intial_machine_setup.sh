@@ -197,7 +197,7 @@ fi
 sleep 2
 
 # Installing skype
-skype
+sudo dpkg -l | grep skype
 if [[ $? == 0 ]]; then
   echo " #### Skype is Available #### "
 else
@@ -844,7 +844,18 @@ sudo mv STS.desktop /usr/share/applications/
 
 sleep 5
 
-cd /opt/ && wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
-sudo dpkg -i teamviewer_amd64.deb
+sudo dpkg -l | grep teamviewer
+if [[ $? == 0 ]]; then
+  echo " #### Teamviewer is Available #### "
+else
+  echo " #### Installing Teamviewer #### "
+  cd /opt/ && wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+  sudo dpkg -i teamviewer_amd64.deb &>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+   echo " ### Teamviewer is Installed ### "
+  else
+    echo " ### Teamviewer is not Installed ### " >> Not_Installed.txt
+  fi
+fi
 
 sleep 5
