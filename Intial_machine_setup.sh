@@ -653,6 +653,12 @@ else
         esac
    done
  fi  
+echo "#### Installing NPM #####"
+sudo apt install npm
+echo " #### Installing Angular CLI"
+sudo npm install -g @angular/cli
+echo "#### Installing Type Script ####"
+sudo npm install -g typescript
 
 cd /opt/
 wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
@@ -842,7 +848,7 @@ EOT
 
 sudo mv STS.desktop /usr/share/applications/
 
-sleep 5
+sleep 2
 
 sudo dpkg -l | grep teamviewer
 if [[ $? == 0 ]]; then
@@ -858,4 +864,19 @@ else
   fi
 fi
 
-sleep 5
+sleep 2
+
+sudo dpkg -l | grep redis
+if [[ $? == 0 ]]; then
+  echo " #### Redis is Available #### "
+else
+  echo " #### Redis Server Teamviewer #### "
+  sudo apt update
+  sudo apt install redis-server &>> Not_Installed.txt
+  if [[ $? == 0 ]]; then
+   echo " ### Redis-Server is Installed ### "
+  else
+    echo " ### Redis-Server is not Installed ### " >> Not_Installed.txt
+  fi
+fi
+
