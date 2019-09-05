@@ -89,6 +89,7 @@ do
           echo " ### Python-pip is not Installed ### "
           echo "4.Python-pip is not Installed" >> Not_Installed.txt
         fi
+        ;;
   Skip_Python_Installation)
         echo " #### Going to Next Installation #### "
           break
@@ -125,6 +126,7 @@ clear
         2)
         echo " Skipping Ansible "
         break
+        ;;
        esac
       done
 fi
@@ -134,29 +136,30 @@ sleep 2
 if [[ -e /etc/network/if-up.d/openssh-server ]]; then
 echo " #### Open-ssh Server in Installed #### "
 else
-        while :
-        do
-        clear
-                echo " What do you want "
-                echo "1)Install Open-Ssh Server "
-                echo "2)Skip Open-Ssh Server"
-                read -p "Select option [1-2] : " option
-                case $option in
-                        1)
-                        echo " ##### Installing open-ssh server ##### "
-                        sudo $ptoin install openssh-server openssh-client -y &>> Not_Installed.txt
-                                if [[ $? == 0 ]]; then
-                                        echo " ### openssh server installed successfully ### "
-                                else
-                                        echo "6.Openssh Server is not installed" >> Not_Installed.txt
-                                fi
-                                  break
-                                  ;;
-                                2)
-                                echo " Skipping Ansible "
-                                break
-                             esac
-                        done
+      while :
+      do
+      clear
+          echo " What do you want "
+          echo "1)Install Open-Ssh Server "
+          echo "2)Skip Open-Ssh Server"
+          read -p "Select option [1-2] : " option
+          case $option in
+               1)
+                echo " ##### Installing open-ssh server ##### "
+                sudo $ptoin install openssh-server openssh-client -y &>> Not_Installed.txt
+                    if [[ $? == 0 ]]; then
+                      echo " ### openssh server installed successfully ### "
+                    else
+                       echo "6.Openssh Server is not installed" >> Not_Installed.txt
+                    fi
+                    break
+                 ;;
+                2)
+                  echo " Skipping Open-SSH Server "
+                  break
+                ;;
+              esac
+          done
 fi
 sleep 2
 
@@ -164,19 +167,38 @@ sleep 2
 if [[ -e /etc/apache2/apache2.conf ]]; then
   echo " ##### Apache Server is Installed ##### "
 else
-  echo " #### Installing Apache Server #### "
-  sudo $ptoin install apache2 -y &>> Not_Installed.txt
-  if [[ $? == 0 ]]; then
-    echo " ### Apache Server is Installed Successfully ### "
-  else
-    echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
-  fi
+   while :
+      do
+      clear
+          echo " What do you want "
+          echo "1)Install Apache Server "
+          echo "2)Skip Apache Server"
+          read -p "Select option [1-2] : " option
+          case $option in
+               1)
+                 echo " #### Installing Apache Server #### "
+                  sudo $ptoin install apache2 -y &>> Not_Installed.txt
+                    if [[ $? == 0 ]]; then
+                      echo " ### Apache Server is Installed Successfully ### "
+                    else
+                      echo " ### 7.Apache Server is not Installed ### " >> Not_Installed.txt
+                    fi  
+                    break
+                 ;;
+                2)
+                  echo " ### Skipping Apache-Server ### "
+                  break
+                 ;;
+              esac
+          done
+
+ 
 fi
 sleep 2
 
 # Installing skype
-skypeforlinux
-if [[ $? == 0 ]];
+skype
+if [[ $? == 0 ]]; then
   echo " #### Skype is Available #### "
 else
   echo " #### Installing Skype #### "
@@ -192,7 +214,7 @@ sleep 2
 
 # Installing java Default Version
 sudo $ptoin install software-properties-common -y
-if [[ -f  /usr/lib/jvm]]; then
+if [[ -f  /usr/lib/jvm ]]; then
   while :
   do
   clear
@@ -201,6 +223,7 @@ if [[ -f  /usr/lib/jvm]]; then
      echo "what do you want do?"
      echo " 1)Install Specific Version"
      echo " 2)Continue with Default"
+     echo " 3)Skip Java Installation"
      read -p "Select an option [1-2]: " option
      case $option in
             1)
@@ -222,6 +245,10 @@ if [[ -f  /usr/lib/jvm]]; then
             echo " Going to Next Installation Setup "
             break
             ;;
+            3)
+            echo
+            echo " ### Skipping Java Setup ### "
+            ;;
           esac
       done
 else
@@ -233,7 +260,8 @@ else
           echo "what do you want to do?"
           echo "  1) Install Default Java"
           echo "  2) Install Specific Version"
-          read -p "Select an option [1-2]: " option
+          echo "  3) Skip Java Setup"
+          read -p "Select an option [1-3]: " option
           case $option in
           1)
             echo "### Installing Default Java ###"
@@ -260,6 +288,11 @@ else
             fi
             break
             ;;
+            3)
+            echo
+            echo " ### Skipping Java Setup ### "
+            break
+            ;;
           esac
       done
 fi
@@ -267,20 +300,38 @@ fi
 sleep 2
 
  # Installing Maven
-#mvn --version
-#if [[ $? == 0 ]]; then
-#  echo "#### Maven is Installed ####"
-#else
- # echo " ### Maven is not Installed ### "
-  #echo " ### Installing Maven ### "
-  #sudo $ptoin install maven $>> Not_Installed.txt
-  #if [[ $? == 0 ]]; then
-  #  echo "### Maven is Installed ###"
-  #else
-  #  echo "### Maven is not Installed ###"
-   # echo "### 10.Maven is not Installed ###" >> Not_Installed.txt
-  #fi
-#fi
+mvn --version
+if [[ $? == 0 ]]; then
+  echo "#### Maven is Installed ####"
+else
+  while :
+      do
+      clear
+          echo " What do you want "
+          echo "1)Install Apache Server "
+          echo "2)Skip Apache Server"
+          read -p "Select option [1-2] : " option
+          case $option in
+               1)
+                echo " ### Maven is not Installed ### "
+                echo " ### Installing Maven ### "
+                sudo $ptoin install maven $>> Not_Installed.txt
+                if [[ $? == 0 ]]; then
+                  echo "### Maven is Installed ###"
+                else
+                  echo "### Maven is not Installed ###"
+                  echo "### 10.Maven is not Installed ###" >> Not_Installed.txt
+                fi
+                break
+                ;;
+               2)
+                echo
+                echo " Going to Next Installation Setup "
+                break
+                ;;
+          esac
+      done
+fi
 
  # Installing Tomcat
  ls /etc/ |grep tomcat
@@ -477,7 +528,7 @@ fi
 sleep 2
 
 # Installing Node
-sudo dpkg -l | grep 'npm' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2
+sudo dpkg -l | grep 'node' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2
 if [[ $? == 0 ]]; then
   echo " #### Nodejs is Availble & Versions are " $(sudo dpkg -l | grep 'npm' | tr -s ' ' | cut -d' ' -f2,3 | tr ' ' : | cut -d: -f1,2) "####"
   while :
@@ -602,8 +653,6 @@ else
         esac
    done
  fi  
-
-sudo $ptoin install -y npm 
 
 cd /opt/
 wget -q https://dl.pstmn.io/download/latest/linux?arch=64 -O postman.tar.gz
@@ -773,25 +822,29 @@ sudo mv postman.desktop /usr/share/applcations/
 
 # Installing gnome tweak tool which contains adanced options for ubuntu gui
 sudo add-$ptoin-repository universe
-sudo $ptoin install gnome-tweak-tool
+sudo $ptoin install gnome-tweak-tool -y
 # Download STS 
-#cd /opt/
-#sudo wget https://download.springsource.com/release/STS/3.9.9.RELEASE/dist/e4.12/spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
-#sudo tar -xzvf spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
-#cd /opt/sts-bundle/sts-3.9.9.RELEASE
-#cat << EOT > STS.desktop
-#[Desktop Entry]
-#Name=SpringSource Tool Suite
-#Comment=SpringSource Tool Suite
-#Exec=/opt/sts-bundle/sts-3.9.9.RELEASE/STS
-#Icon=/opt/sts-bundle/sts-3.9.9.RELEASE/icon.xpm
-#StartupNotify=true
-#Terminal=false
-##Type=Application
-#Categories=Development;IDE;Java;
-#EOT
+cd /opt/
+sudo wget https://download.springsource.com/release/STS/3.9.9.RELEASE/dist/e4.12/spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+sudo tar -xzvf spring-tool-suite-3.9.9.RELEASE-e4.12.0-linux-gtk-x86_64.tar.gz
+cd /opt/sts-bundle/sts-3.9.9.RELEASE
+cat << EOT > STS.desktop
+[Desktop Entry]
+Name=SpringSource Tool Suite
+Comment=SpringSource Tool Suite
+Exec=/opt/sts-bundle/sts-3.9.9.RELEASE/STS
+Icon=/opt/sts-bundle/sts-3.9.9.RELEASE/icon.xpm
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Development;IDE;Java;
+EOT
 
-#sudo mv STS.desktop /usr/share/applications/
+sudo mv STS.desktop /usr/share/applications/
 
 sleep 5
 
+cd /opt/ && wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+sudo dpkg -i teamviewer_amd64.deb
+
+sleep 5
