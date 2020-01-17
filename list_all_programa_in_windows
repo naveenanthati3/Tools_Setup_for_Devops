@@ -1,0 +1,3 @@
+#open cmd and run 
+wmic
+/output:C:\Users\username\Documents\new.txt product get name,version
