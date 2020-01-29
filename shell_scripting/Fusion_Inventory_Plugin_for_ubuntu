@@ -23,7 +23,7 @@ sudo dpkg -i fusioninventory-agent_2.4.2-1_all.deb
 if [ -e /etc/fusioninventory/agent.cfg ]
 then
 cd /etc/fusioninventory/
-sudo sed -i '14i server = http://192.168.1.7/glpi/plugins/fusioninventory/' agent.cfg
+sudo sed -i '14i server = http://192.168.1.5:8090/glpi/plugins/fusioninventory/' agent.cfg
 echo " Fusion Inventory Installed"
 else
 echo " Fusion Inventory are not Installed Properly"
